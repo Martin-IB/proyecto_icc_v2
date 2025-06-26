@@ -1,0 +1,4 @@
+fastapi
+pymysql
+uvicorn
+email_validator
