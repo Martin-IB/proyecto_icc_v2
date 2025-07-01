@@ -21,6 +21,7 @@ from dao.db import init_db
 from typing import List
 import uvicorn
 from typing import Optional
+import time
 app = FastAPI()
 
 
@@ -32,7 +33,12 @@ app.add_middleware(
     allow_headers=["*"],  
 )
 # Initialize database before starting the application
-init_db()
+time.sleep(5)  # Espera adicional
+init_db()  # inicializa la conexión una vez
+
+@app.get("/")
+def read_root():
+    return {"message": "Backend OK"}
 
 # Biorreactor API Routes
 @app.post("/biorreactor/", response_model=Biorreactor)

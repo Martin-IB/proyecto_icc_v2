@@ -1,20 +1,33 @@
 import pymysql
 from contextlib import contextmanager
 
-# Database configuration
+import time
+import pymysql
+from contextlib import contextmanager
+
 DB_CONFIG = {
-    'host': 'localhost',
+    'host': 'host.docker.internal',  # nombre del servicio en docker-compose
     'user': 'root',
-    'password': '', 
+    'password': '',  # asegúrate que en docker-compose esté también vacío
     'database': 'db_proyectICC',
     'charset': 'utf8mb4',
     'cursorclass': pymysql.cursors.DictCursor
 }
 
-# Database connection context manager
 @contextmanager
 def get_db_connection():
-    connection = pymysql.connect(**DB_CONFIG)
+    connection = None
+    for attempt in range(20):  # hasta 10 intentos
+        try:
+            connection = pymysql.connect(**DB_CONFIG)
+            print("Conexión exitosa a la base de datos.")
+            break
+        except pymysql.err.OperationalError as e:
+            print(f"Intento {attempt+1}/20 - Esperando conexión a la base de datos...")
+            time.sleep(5)  # espera 3 segundos
+    else:
+        raise Exception(" No se pudo conectar a la base de datos después de varios intentos.")
+
     try:
         yield connection
     finally:
@@ -60,7 +73,8 @@ def init_db():
                 CREATE TABLE IF NOT EXISTS tipo (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     nombre VARCHAR(45),
-                    email VARCHAR(45)
+                    email VARCHAR(45),
+                    password varchar(45) 
                 )
             """)
 

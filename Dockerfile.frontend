@@ -1,0 +1,12 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY frontend/ /app
+
+RUN npm install
+
+# Puerto expuesto para desarrollo
+EXPOSE 3000
+
+CMD ["npm", "start"]
