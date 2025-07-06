@@ -1,12 +1,13 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 class Empresa(BaseModel):
-    id: Optional[int] = None
+    idEmpresa: Optional[int] = None
     nombre: str
     ruc: str
-    correo: str
+    correo: EmailStr
     direccion: str
     pais: str
     representante: str
     telefono: str
+    Usuario_idUsuario: int

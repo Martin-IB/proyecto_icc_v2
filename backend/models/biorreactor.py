@@ -1,7 +1,9 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class Biorreactor(BaseModel):
-    id: int | None = None
-    codigo: int
-    ubicacion: str | None = None
+    idBiorreactor: Optional[int] = None
+    codigo: Optional[int]
+    ubicacion: str
     estado: str
+    Usuario_idUsuario: int

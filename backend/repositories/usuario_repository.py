@@ -1,44 +1,97 @@
-from models.usuario import Usuario
+from typing import List, Optional
 from dao.db import get_db_connection
-from typing import List
+from models.usuario import Usuario
 
 class UsuarioRepository:
-    def __init__(self, db_connection):
-        self.db_connection = db_connection
-
     def create(self, usuario: Usuario) -> int:
-        with self.db_connection() as conn:
+        with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = "INSERT INTO usuario (nombre, email) VALUES (%s, %s)"
-                cursor.execute(query, (usuario.nombre, usuario.email))
+                query = """
+                    INSERT INTO Usuario (idUsuario, nombre, email, password, Tipo_idTipo)
+                    VALUES (%s, %s, %s, %s, %s)
+                """
+                cursor.execute(query, (
+                    usuario.idUsuario,
+                    usuario.nombre,
+                    usuario.email,
+                    usuario.password,
+                    usuario.Tipo_idTipo
+                ))
                 conn.commit()
-                return cursor.lastrowid
+                return usuario.idUsuario
 
-    def get_by_id(self, usuario_id: int) -> Usuario | None:
-        with self.db_connection() as conn:
+    def get_by_id(self, idUsuario: int) -> Optional[Usuario]:
+        with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("SELECT * FROM usuario WHERE id = %s", (usuario_id,))
+                cursor.execute("""
+                    SELECT 
+                        idUsuario, 
+                        nombre, 
+                        email, 
+                        password, 
+                        fecha_registro, 
+                        Tipo_idTipo 
+                    FROM Usuario 
+                    WHERE idUsuario = %s
+                """, (idUsuario,))
                 result = cursor.fetchone()
                 return Usuario(**result) if result else None
 
     def get_all(self) -> List[Usuario]:
-        with self.db_connection() as conn:
+        with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("SELECT * FROM usuario")
+                cursor.execute("""
+                    SELECT 
+                        idUsuario, 
+                        nombre, 
+                        email, 
+                        password, 
+                        fecha_registro, 
+                        Tipo_idTipo 
+                    FROM Usuario
+                """)
                 results = cursor.fetchall()
                 return [Usuario(**row) for row in results]
 
-    def update(self, usuario_id: int, usuario: Usuario) -> bool:
-        with self.db_connection() as conn:
+    def update(self, idUsuario: int, usuario: Usuario) -> bool:
+        with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = "UPDATE usuario SET nombre = %s, email = %s WHERE id = %s"
-                cursor.execute(query, (usuario.nombre, usuario.email, usuario_id))
+                query = """
+                    UPDATE Usuario 
+                    SET nombre = %s, email = %s, password = %s, Tipo_idTipo = %s 
+                    WHERE idUsuario = %s
+                """
+                cursor.execute(query, (
+                    usuario.nombre,
+                    usuario.email,
+                    usuario.password,
+                    usuario.Tipo_idTipo,
+                    idUsuario
+                ))
                 conn.commit()
                 return cursor.rowcount > 0
 
-    def delete(self, usuario_id: int) -> bool:
-        with self.db_connection() as conn:
+    def delete(self, idUsuario: int) -> bool:
+        with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("DELETE FROM usuario WHERE id = %s", (usuario_id,))
+                cursor.execute("DELETE FROM Usuario WHERE idUsuario = %s", (idUsuario,))
                 conn.commit()
                 return cursor.rowcount > 0
+
+    def login(self, email: str, password: str) -> Optional[Usuario]:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                query = """
+                    SELECT 
+                        idUsuario, 
+                        nombre, 
+                        email, 
+                        password, 
+                        fecha_registro, 
+                        Tipo_idTipo 
+                    FROM Usuario 
+                    WHERE email = %s AND password = %s
+                """
+                cursor.execute(query, (email, password))
+                result = cursor.fetchone()
+                return Usuario(**result) if result else None

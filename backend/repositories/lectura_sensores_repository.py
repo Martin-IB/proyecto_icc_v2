@@ -1,52 +1,36 @@
-from models.lectura_sensores import LecturaSensor
+from typing import List, Optional
 from dao.db import get_db_connection
-from typing import List
+from models.lectura_sensores import LecturaSensores
 
-class LecturaSensorRepository:
-    def __init__(self, db_connection):
-        self.db_connection = db_connection
-
-    def create(self, lectura: LecturaSensor) -> int:
-        with self.db_connection() as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(
-                    "INSERT INTO lectura_sensores (temperatura, humedad) VALUES (%s, %s)",
-                    (lectura.temperatura, lectura.humedad)
-                )
-                conn.commit()
-                return cursor.lastrowid
-
-    def get_by_id(self, lectura_id: int) -> LecturaSensor | None:
-        with self.db_connection() as conn:
-            with conn.cursor() as cursor:
-                cursor.execute("SELECT * FROM lectura_sensores WHERE id = %s", (lectura_id,))
-                result = cursor.fetchone()
-                return LecturaSensor(**result) if result else None
-
-    def get_all(self) -> List[LecturaSensor]:
-        with self.db_connection() as conn:
-            with conn.cursor() as cursor:
-                cursor.execute("SELECT * FROM lectura_sensores")
-                results = cursor.fetchall()
-                return [LecturaSensor(**row) for row in results]
-            
-    def update(self, lectura_id: int, lectura: LecturaSensor) -> bool:
+class LecturaRepository:
+    def create(self, lectura: LecturaSensores) -> int:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
                 query = """
-                    UPDATE lectura_sensores
-                    SET temperatura = %s, humedad = %s
-                    WHERE id = %s
+                    INSERT INTO Lectura_sensores 
+                    (temperatura, humedad, estado_ambiente, Biorreactor_idBiorreactor, Sensores_idSensores)
+                    VALUES (%s, %s, %s, %s, %s)
                 """
-                cursor.execute(query, (lectura.temperatura, lectura.humedad, lectura_id))
+                cursor.execute(query, (
+                    lectura.temperatura,
+                    lectura.humedad,
+                    lectura.estado_ambiente,
+                    lectura.Biorreactor_idBiorreactor,
+                    lectura.Sensores_idSensores
+                ))
                 conn.commit()
-                return cursor.rowcount > 0
+                return cursor.lastrowid
 
-    def delete(self, lectura_id: int) -> bool:
+    def get_by_id(self, idLectura_sensores: int) -> Optional[LecturaSensores]:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = "DELETE FROM lectura_sensores WHERE id = %s"
-                cursor.execute(query, (lectura_id,))
-                conn.commit()
-                return cursor.rowcount > 0
+                cursor.execute("SELECT * FROM Lectura_sensores WHERE idLectura_sensores = %s", (idLectura_sensores,))
+                result = cursor.fetchone()
+                return LecturaSensores(**result) if result else None
 
+    def get_all(self) -> List[LecturaSensores]:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT * FROM Lectura_sensores")
+                results = cursor.fetchall()
+                return [LecturaSensores(**row) for row in results]

@@ -1,56 +1,69 @@
-import pymysql
-from models.empresas import Empresa
+from typing import List, Optional
 from dao.db import get_db_connection
-from typing import List
+from models.empresas import Empresa
 
 class EmpresaRepository:
     def create(self, empresa: Empresa) -> int:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
                 query = """
-                    INSERT INTO empresas (nombre, ruc, correo, direccion, pais, representante, telefono)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO Empresa 
+                    (nombre, ruc, correo, direccion, pais, representante, telefono, Usuario_idUsuario)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """
                 cursor.execute(query, (
-                    empresa.nombre, empresa.ruc, empresa.correo, empresa.direccion,
-                    empresa.pais, empresa.representante, empresa.telefono
+                    empresa.nombre,
+                    empresa.ruc,
+                    empresa.correo,
+                    empresa.direccion,
+                    empresa.pais,
+                    empresa.representante,
+                    empresa.telefono,
+                    empresa.Usuario_idUsuario
                 ))
                 conn.commit()
                 return cursor.lastrowid
 
-    def get_by_id(self, empresa_id: int) -> Empresa | None:
+    def get_by_id(self, idEmpresa: int) -> Optional[Empresa]:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = "SELECT * FROM empresas WHERE id = %s"
-                cursor.execute(query, (empresa_id,))
+                cursor.execute("SELECT * FROM Empresa WHERE idEmpresa = %s", (idEmpresa,))
                 result = cursor.fetchone()
                 return Empresa(**result) if result else None
 
     def get_all(self) -> List[Empresa]:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("SELECT * FROM empresas")
+                cursor.execute("SELECT * FROM Empresa")
                 results = cursor.fetchall()
-                return [Empresa(**result) for result in results]
+                return [Empresa(**row) for row in results]
 
-    def update(self, empresa_id: int, empresa: Empresa) -> bool:
+    def update(self, idEmpresa: int, empresa: Empresa) -> bool:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
                 query = """
-                    UPDATE empresas SET nombre=%s, ruc=%s, correo=%s, direccion=%s, 
-                    pais=%s, representante=%s, telefono=%s WHERE id=%s
+                    UPDATE Empresa 
+                    SET nombre=%s, ruc=%s, correo=%s, direccion=%s, pais=%s, 
+                        representante=%s, telefono=%s, Usuario_idUsuario=%s
+                    WHERE idEmpresa = %s
                 """
                 cursor.execute(query, (
-                    empresa.nombre, empresa.ruc, empresa.correo, empresa.direccion,
-                    empresa.pais, empresa.representante, empresa.telefono, empresa_id
+                    empresa.nombre,
+                    empresa.ruc,
+                    empresa.correo,
+                    empresa.direccion,
+                    empresa.pais,
+                    empresa.representante,
+                    empresa.telefono,
+                    empresa.Usuario_idUsuario,
+                    idEmpresa
                 ))
                 conn.commit()
                 return cursor.rowcount > 0
 
-    def delete(self, empresa_id: int) -> bool:
+    def delete(self, idEmpresa: int) -> bool:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = "DELETE FROM empresas WHERE id = %s"
-                cursor.execute(query, (empresa_id,))
+                cursor.execute("DELETE FROM Empresa WHERE idEmpresa = %s", (idEmpresa,))
                 conn.commit()
                 return cursor.rowcount > 0

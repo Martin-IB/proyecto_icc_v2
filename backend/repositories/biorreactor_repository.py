@@ -1,51 +1,59 @@
-import pymysql
-from models.biorreactor import Biorreactor
 from dao.db import get_db_connection
-from typing import List
+from models.biorreactor import Biorreactor
+from typing import List, Optional
 
 class BiorreactorRepository:
-    def create(self, biorreactor: Biorreactor) -> int:
+    def create(self, bior: Biorreactor) -> int:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
                 query = """
-                    INSERT INTO biorreactor (codigo, ubicacion, estado)
-                    VALUES (%s, %s, %s)
+                    INSERT INTO Biorreactor (codigo, ubicacion, estado, Usuario_idUsuario)
+                    VALUES (%s, %s, %s, %s)
                 """
-                cursor.execute(query, (biorreactor.codigo, biorreactor.ubicacion, biorreactor.estado))
+                cursor.execute(query, (
+                    bior.codigo,
+                    bior.ubicacion,
+                    bior.estado,
+                    bior.Usuario_idUsuario
+                ))
                 conn.commit()
                 return cursor.lastrowid
 
-    def get_by_id(self, biorreactor_id: int) -> Biorreactor | None:
+    def get_by_id(self, idBiorreactor: int) -> Optional[Biorreactor]:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = "SELECT * FROM biorreactor WHERE id = %s"
-                cursor.execute(query, (biorreactor_id,))
+                cursor.execute("SELECT * FROM Biorreactor WHERE idBiorreactor = %s", (idBiorreactor,))
                 result = cursor.fetchone()
                 return Biorreactor(**result) if result else None
 
     def get_all(self) -> List[Biorreactor]:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("SELECT * FROM biorreactor")
+                cursor.execute("SELECT * FROM Biorreactor")
                 results = cursor.fetchall()
-                return [Biorreactor(**result) for result in results]
+                return [Biorreactor(**row) for row in results]
 
-    def update(self, biorreactor_id: int, biorreactor: Biorreactor) -> bool:
+    def update(self, idBiorreactor: int, bior: Biorreactor) -> bool:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
                 query = """
-                    UPDATE biorreactor 
-                    SET codigo = %s, ubicacion = %s, estado= %s
-                    WHERE id = %s
+                    UPDATE Biorreactor
+                    SET codigo = %s, ubicacion = %s, estado = %s, Usuario_idUsuario = %s
+                    WHERE idBiorreactor = %s
                 """
-                cursor.execute(query, (biorreactor.codigo, biorreactor.ubicacion, biorreactor.estado, biorreactor_id))
+                cursor.execute(query, (
+                    bior.codigo,
+                    bior.ubicacion,
+                    bior.estado,
+                    bior.Usuario_idUsuario,
+                    idBiorreactor
+                ))
                 conn.commit()
                 return cursor.rowcount > 0
 
-    def delete(self, biorreactor_id: int) -> bool:
+    def delete(self, idBiorreactor: int) -> bool:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = "DELETE FROM biorreactor WHERE id = %s"
-                cursor.execute(query, (biorreactor_id,))
+                cursor.execute("DELETE FROM Biorreactor WHERE idBiorreactor = %s", (idBiorreactor,))
                 conn.commit()
                 return cursor.rowcount > 0

@@ -7,49 +7,38 @@ class TipoRepository:
     def create(self, tipo: Tipo) -> int:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = """
-                    INSERT INTO tipo (nombre, email, password)
-                    VALUES (%s, %s, %s)
-                """
-                cursor.execute(query, (tipo.nombre, tipo.email, tipo.password))
+                query = "INSERT INTO Tipo (nombre) VALUES (%s)"
+                cursor.execute(query, (tipo.nombre,))
                 conn.commit()
-                return cursor.lastrowid
-            
-    def get_by_email(self, email: str) -> Tipo | None:
+                return cursor.lastrowid 
+
+    def get_by_id(self, idTipo: int) -> Tipo | None:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = "SELECT * FROM tipo WHERE email = %s"
-                cursor.execute(query, (email,))
-                result = cursor.fetchone()
-                return Tipo(**result) if result else None
-            
-    def get_by_id(self, tipo_id: int) -> Tipo | None:
-        with get_db_connection() as conn:
-            with conn.cursor() as cursor:
-                query = "SELECT * FROM tipo WHERE id = %s"
-                cursor.execute(query, (tipo_id,))
+                query = "SELECT * FROM Tipo WHERE idTipo = %s"
+                cursor.execute(query, (idTipo,))
                 result = cursor.fetchone()
                 return Tipo(**result) if result else None
 
     def get_all(self) -> List[Tipo]:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("SELECT * FROM tipo")
+                cursor.execute("SELECT * FROM Tipo")
                 results = cursor.fetchall()
                 return [Tipo(**row) for row in results]
 
-    def update(self, tipo_id: int, tipo: Tipo) -> bool:
+    def update(self, idTipo: int, tipo: Tipo) -> bool:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = "UPDATE tipo SET nombre = %s, email = %s WHERE id = %s"
-                cursor.execute(query, (tipo.nombre, tipo.email, tipo_id))
+                query = "UPDATE Tipo SET nombre = %s WHERE idTipo = %s"
+                cursor.execute(query, (tipo.nombre, idTipo))
                 conn.commit()
                 return cursor.rowcount > 0
 
-    def delete(self, tipo_id: int) -> bool:
+    def delete(self, idTipo: int) -> bool:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = "DELETE FROM tipo WHERE id = %s"
-                cursor.execute(query, (tipo_id,))
+                query = "DELETE FROM Tipo WHERE idTipo = %s"
+                cursor.execute(query, (idTipo,))
                 conn.commit()
                 return cursor.rowcount > 0

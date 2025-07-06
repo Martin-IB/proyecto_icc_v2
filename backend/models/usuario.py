@@ -1,10 +1,11 @@
-
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 from datetime import datetime
 
 class Usuario(BaseModel):
-    id: int | None = None
+    idUsuario: Optional[int] = Field(default=None)
     nombre: str
-    email: str
-    fecha_registro: datetime | None = None
+    email: EmailStr
+    password: str
+    fecha_registro: Optional[datetime] = None
+    Tipo_idTipo: int
