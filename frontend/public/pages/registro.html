@@ -1,0 +1,50 @@
+<div class="contenedor-tabla">
+  <h3>Gestión de Registros</h3>
+
+  <div id="formularioAdminRegistro" style="display: none;">
+    <form id="registroForm" class="mb-3">
+      <div class="row">
+        <div class="col-md-3 mb-2">
+          <input type="text" id="tipo_evento" class="form-control" placeholder="Tipo de evento" required>
+        </div>
+        <div class="col-md-3 mb-2">
+          <textarea id="descripcion" class="form-control" placeholder="Descripción" required></textarea>
+        </div>
+        <div class="col-md-3 mb-2">
+          <select id="biorreactor" class="form-select" required>
+            <option value="">Seleccionar Biorreactor</option>
+            <option value="1">Biorreactor 1</option>
+            <option value="2">Biorreactor 2</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-2">
+          <select id="sensor" class="form-select" required>
+            <option value="">Seleccionar Sensor</option>
+            <option value="1">Sensor 1</option>
+            <option value="2">Sensor 2</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-2">
+          <button type="submit" class="btn btn-success w-100">Guardar</button>
+        </div>
+      </div>
+      <input type="hidden" id="registroId">
+    </form>
+  </div>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Tipo Evento</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Biorreactor</th>
+        <th>Sensor</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="registroTableBody"></tbody>
+  </table>
+</div>
+
+<script src="../js/registro.js"></script>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Analytics Dashboard - This is an example dashboard created using build-in elements and components.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://demo.dashboardpack.com/architectui-html-free/main.css" rel="stylesheet"></head>
+
+
+<body>
+
+  <script>
+    //  Recupera al usuario logueado
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+    // Si no hay sesión activa, redirige al login
+    if (!usuario) {
+      window.location.href = "../index.html";
+    }
+
+    //  Cuando la página esté lista
+    document.addEventListener("DOMContentLoaded", () => {
+      //  Mostrar el nombre del usuario en la barra
+      const nombreUsuario = document.getElementById("nombreUsuario");
+      if (nombreUsuario) {
+        nombreUsuario.textContent = usuario.nombre || "Usuario";
+      }
+
+      // Mostrar/ocultar 
+      if (usuario.Tipo_idTipo === 1) {
+        // Admin: muestra todo
+        document.querySelectorAll(".solo-user").forEach(el => el.style.display = "none");
+      } else {
+        // Usuario común: oculta solo lo de admin
+        document.querySelectorAll(".solo-admin").forEach(el => el.style.display = "none");
+      }
+    });
+  </script>
+
+
+
+  <!-- Barra superior -->
+  <div class="navbar">
+    <div class="navbar-title"> Control -  <span id="nombreUsuario"></span></div>
+    <button class="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
+  </div>
+
+  <!-- Menú lateral -->
+  <div class="sidebar">
+    <!-- Solo para administradores -->
+    <div class="solo-admin">
+      <a href="#" onclick="cargarComponente('usuario')">Usuarios</a>
+      <a href="#" onclick="cargarComponente('sensores')">Sensores</a>
+      <a href="#" onclick="cargarComponente('empresa')">Empresas</a>
+      <a href="#" onclick="cargarComponente('registro')">Registros</a>
+    </div>
+
+    <!-- Visible para todos -->
+    <a href="#" onclick="cargarComponente('biorreactor')">Biorreactores</a>
+    <a href="#" onclick="cargarComponente('lectura')">Lectura Sensores</a>
+  </div>
+
+
+  <!-- Contenido principal -->
+  <div class="main">
+    <h2 class="welcome">Panel de Control</h2>
+
+    <!-- semaforo  -->
+    <div class="card">
+      <h3>Estado General del Biorreactor</h3>
+      <div class="semaforo-circular">
+        <div class="circle-chart">
+          <canvas id="optimoChart" width="100" height="100"></canvas>
+          <p>Óptimo</p>
+        </div>
+        <div class="circle-chart">
+          <canvas id="ajusteChart" width="100" height="100"></canvas>
+          <p>Ajuste</p>
+        </div>
+        <div class="circle-chart">
+          <canvas id="criticoChart" width="100" height="100"></canvas>
+          <p>Crítico</p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- grafico evolucion temperatura -->
+    <div class="card">
+      <h3>Temperatura y Humedad</h3>
+      <div style="display: flex; gap: 10px;">
+        <canvas id="graficoTemp" class="canvas-pequeno"></canvas>
+        <canvas id="graficoHum" class="canvas-pequeno"></canvas>
+      </div>
+    </div>
+
+    <!-- Pronóstico del sistema -->
+    <div class="card" id="pronosticoContainer">
+      <h3>Pronóstico del Sistema</h3>
+      <p id="pronosticoRiego">🔍 Analizando condiciones...</p>
+    </div>
+
+    
+
+
+    <!-- Contenedor del asistente flotante -->
+    <div class="asistente-flotante">
+      <span class="titulo-asistente">Asistente</span>
+      <button id="botonAsistente" onclick="iniciarVoz()" title="Asistente de diagnóstico">🎙️</button>
+    </div>
+
+    <!-- Mensaje flotante de la respuesta -->
+    <div id="mensajeAsistente" class="mensaje-asistente"></div>
+
+    <div id="contenido-dinamico"></div>
+
+
+
+  <script>
+    function cerrarSesion() {
+     
+      localStorage.removeItem("usuario");
+      window.location.href = "../index.html"; 
+    }
+  </script>
+
+
+
+  <script>
+  async function cargarComponente(nombre) {
+    const contenedor = document.getElementById('contenido-dinamico');
+    contenedor.innerHTML = '🔄 Cargando...';
+
+    try {
+      const respuesta = await fetch(`${nombre}.html`);
+      if (!respuesta.ok) throw new Error('No se pudo cargar el componente.');
+
+      const html = await respuesta.text();
+      contenedor.innerHTML = html;
+
+      // 🔁 Eliminar cualquier script anterior del mismo nombre
+      const scriptsAnteriores = document.querySelectorAll(`script[data-componente="${nombre}"]`);
+      scriptsAnteriores.forEach(s => s.remove());
+
+      // ✅ Cargar nuevo JS solo si no existe
+      const script = document.createElement('script');
+      script.src = `../js/${nombre}.js`;
+      script.dataset.componente = nombre;
+      document.body.appendChild(script);
+
+    } catch (error) {
+      contenedor.innerHTML = '❌ Error al cargar el componente.';
+      console.error(error);
+    }
+  }
+
+  </script>
+
+
+
+
+
+
+
+  <script src="../js/panel_estado.js"></script>
+</body>
+</html>

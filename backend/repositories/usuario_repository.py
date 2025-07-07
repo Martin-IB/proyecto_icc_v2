@@ -1,24 +1,26 @@
+
+
 from typing import List, Optional
 from dao.db import get_db_connection
-from models.usuario import Usuario
+from models.usuario import Usuario,UsuarioUpdate
 
 class UsuarioRepository:
-    def create(self, usuario: Usuario) -> int:
+    def create(self, usuario: UsuarioUpdate) -> int:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
                 query = """
-                    INSERT INTO Usuario (idUsuario, nombre, email, password, Tipo_idTipo)
-                    VALUES (%s, %s, %s, %s, %s)
+                    INSERT INTO Usuario (nombre, email, password, Tipo_idTipo)
+                    VALUES (%s, %s, %s, %s)
                 """
                 cursor.execute(query, (
-                    usuario.idUsuario,
                     usuario.nombre,
                     usuario.email,
                     usuario.password,
                     usuario.Tipo_idTipo
                 ))
                 conn.commit()
-                return usuario.idUsuario
+                return cursor.lastrowid
+
 
     def get_by_id(self, idUsuario: int) -> Optional[Usuario]:
         with get_db_connection() as conn:
@@ -81,17 +83,8 @@ class UsuarioRepository:
     def login(self, email: str, password: str) -> Optional[Usuario]:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
-                query = """
-                    SELECT 
-                        idUsuario, 
-                        nombre, 
-                        email, 
-                        password, 
-                        fecha_registro, 
-                        Tipo_idTipo 
-                    FROM Usuario 
-                    WHERE email = %s AND password = %s
-                """
+                query = "SELECT * FROM Usuario WHERE email = %s AND password = %s"
                 cursor.execute(query, (email, password))
                 result = cursor.fetchone()
+                print("Resultado de login SQL:", result)
                 return Usuario(**result) if result else None

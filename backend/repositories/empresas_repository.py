@@ -1,6 +1,7 @@
+# REPOSITORY CORREGIDO - repositories/empresa_repository.py
 from typing import List, Optional
 from dao.db import get_db_connection
-from models.empresas import Empresa
+from models.empresa import Empresa
 
 class EmpresaRepository:
     def create(self, empresa: Empresa) -> int:

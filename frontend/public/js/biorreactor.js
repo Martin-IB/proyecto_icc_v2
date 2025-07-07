@@ -1,19 +1,27 @@
-const API_URL = "http://localhost:8000/biorreactor";
+(() => {
+  const API_URL = "http://localhost:8000/biorreactor";
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const esAdmin = usuario?.Tipo_idTipo === 1;
 
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
+  function iniciarBiorreactor() {
     const form = document.getElementById("biorreactorForm");
+    const formularioAdmin = document.getElementById("formularioAdmin");
     const codigoInput = document.getElementById("nombre");
     const ubicacionInput = document.getElementById("ubicacion");
     const idInput = document.getElementById("biorreactorId");
     const tableBody = document.getElementById("biorreactorTableBody");
+    const thead = document.getElementById("biorreactorThead");
 
-    if (!form || !codigoInput || !ubicacionInput || !idInput || !tableBody) {
-      console.warn("⚠️ Elementos del módulo biorreactor aún no disponibles.");
+    if (!form || !codigoInput || !ubicacionInput || !idInput || !tableBody || !thead) {
+      console.warn("Esperando a que el DOM esté listo para biorreactores...");
+      setTimeout(iniciarBiorreactor, 100);
       return;
     }
 
-    cargarBiorreactores();
+    // Mostrar formulario solo si es admin
+    if (esAdmin && formularioAdmin) {
+      formularioAdmin.style.display = "block";
+    }
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -21,7 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = {
         codigo: parseInt(codigoInput.value),
         ubicacion: ubicacionInput.value,
-        estado: "activo"
+        estado: "activo",
+        Usuario_idUsuario: usuario.idUsuario 
       };
 
       const id = idInput.value;
@@ -51,17 +60,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
       tableBody.innerHTML = "";
 
+      // Encabezados
+      thead.innerHTML = `
+        <tr>
+          <th>Código</th>
+          <th>Ubicación</th>
+          ${esAdmin ? "<th>Acciones</th>" : ""}
+        </tr>
+      `;
+
       biorreactores.forEach(b => {
         const row = document.createElement("tr");
 
         row.innerHTML = `
-          <td>${b.id}</td>
           <td>${b.codigo}</td>
           <td>${b.ubicacion || ''}</td>
-          <td>
-            <button class="btn btn-warning btn-sm" onclick="editarBiorreactor(${b.id}, ${b.codigo}, '${b.ubicacion}')">Editar</button>
-            <button class="btn btn-danger btn-sm" onclick="eliminarBiorreactor(${b.id})">Eliminar</button>
-          </td>
+          ${
+            esAdmin
+              ? `<td>
+                  <button class="btn btn-warning btn-sm" onclick="editarBiorreactor(${b.idBiorreactor}, ${b.codigo}, '${b.ubicacion}')">Editar</button>
+                  <button class="btn btn-danger btn-sm" onclick="eliminarBiorreactor(${b.idBiorreactor})">Eliminar</button>
+                </td>`
+              : ""
+          }
         `;
 
         tableBody.appendChild(row);
@@ -69,12 +90,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.editarBiorreactor = function (id, codigo, ubicacion) {
+      if (!esAdmin) return;
       idInput.value = id;
       codigoInput.value = codigo;
       ubicacionInput.value = ubicacion;
     };
 
     window.eliminarBiorreactor = async function (id) {
+      if (!esAdmin) return;
       if (confirm("¿Deseas eliminar este biorreactor?")) {
         await fetch(`${API_URL}/${id}`, {
           method: "DELETE"
@@ -82,5 +105,10 @@ document.addEventListener("DOMContentLoaded", () => {
         cargarBiorreactores();
       }
     };
-  }, 100);
-});
+
+    // Cargar al iniciar
+    cargarBiorreactores();
+  }
+
+  iniciarBiorreactor();
+})();

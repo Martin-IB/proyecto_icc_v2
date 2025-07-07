@@ -27,7 +27,7 @@ while True:
             # Simulación ajustada si es menor a 25 °C
             if temperatura_real < 25:
                 diferencia = 27 - temperatura_real
-                ruido = random.uniform(-0.3, 0.3)  # ruido realista
+                ruido = random.uniform(-1.15, 1.5)  # ruido realista
                 temperatura_simulada = temperatura_real + diferencia + ruido
             else:
                 temperatura_simulada = temperatura_real

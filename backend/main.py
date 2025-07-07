@@ -4,8 +4,8 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from models.tipo import Tipo
-from models.usuario import Usuario
-from models.biorreactor import Biorreactor
+from models.usuario import Usuario,LoginRequest, UsuarioUpdate
+from models.biorreactor import Biorreactor,BiorreactorUpdate
 from models.sensores import Sensor
 from models.empresas import Empresa
 from models.registro import Registro
@@ -36,8 +36,6 @@ app.add_middleware(
     allow_methods=["*"], 
     allow_headers=["*"],  
 )
-# Initialize database before starting the application
-time.sleep(5)  # Espera adicional
 
 @app.get("/")
 def read_root():
@@ -73,9 +71,17 @@ async def delete_tipo(idTipo: int, service: TipoService = Depends(get_tipo_servi
 
 
 @app.post("/usuario/", response_model=Usuario)
-async def create_usuario(usuario: Usuario, service: UsuarioService = Depends(get_usuario_service)):
-    service.create_usuario(usuario)
-    return usuario
+async def create_usuario(usuario: UsuarioUpdate, service: UsuarioService = Depends(get_usuario_service)):
+    try:
+        return service.create_usuario(usuario)
+    except Exception as e:
+        print("❌ Error al crear usuario:", e)
+        raise HTTPException(status_code=500, detail="Error al crear usuario")
+
+@app.post("/usuario/login", response_model=Usuario)
+async def login_usuario(data: LoginRequest, service: UsuarioService = Depends(get_usuario_service)):
+    print(f"Login recibido: {data.email} - {data.password}")
+    return service.login(data.email, data.password)
 
 @app.get("/usuario/{idUsuario}", response_model=Usuario)
 async def get_usuario(idUsuario: int, service: UsuarioService = Depends(get_usuario_service)):
@@ -94,9 +100,7 @@ async def delete_usuario(idUsuario: int, service: UsuarioService = Depends(get_u
     service.delete_usuario(idUsuario)
     return {"message": "Usuario eliminado correctamente"}
 
-@app.post("/usuario/login", response_model=Usuario)
-async def login_usuario(email: str, password: str, service: UsuarioService = Depends(get_usuario_service)):
-    return service.login(email, password)
+
 
 
 
@@ -106,11 +110,14 @@ async def login_usuario(email: str, password: str, service: UsuarioService = Dep
 # Crear un biorreactor
 @app.post("/biorreactor/", response_model=Biorreactor)
 async def create_biorreactor(
-    bior: Biorreactor,
+    bior: BiorreactorUpdate,
     service: BiorreactorService = Depends(get_biorreactor_service)
 ):
-    bior_id = service.create_biorreactor(bior)
-    return service.get_biorreactor(bior_id)
+    try:
+        return service.create_biorreactor(bior)
+    except Exception as e:
+        print("❌ Error al crear biorreactor:", e)
+        raise HTTPException(status_code=500, detail="Error al crear biorreactor")
 
 # Obtener biorreactor por ID
 @app.get("/biorreactor/{idBiorreactor}", response_model=Biorreactor)
@@ -235,9 +242,9 @@ async def get_lectura(idLectura_sensores: int, service: LecturaService = Depends
     return service.get_lectura(idLectura_sensores)
 
 def calcular_estado_ambiente(temp: float, hum: float) -> str:
-    if 26.8 <= temp <= 27.3 and 68 <= hum <= 75:
+    if 26.8 <= temp <= 27.3 and 68 <= hum <= 80:
         return "Óptimo"
-    elif temp < 25 or hum < 50 or hum > 80:
+    elif temp < 25 or hum < 60 or hum > 80:
         return "Crítico"
     else:
         return "Ajustar"

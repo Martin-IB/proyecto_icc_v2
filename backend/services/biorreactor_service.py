@@ -1,4 +1,4 @@
-from models.biorreactor import Biorreactor
+from models.biorreactor import Biorreactor,BiorreactorUpdate
 from repositories.biorreactor_repository import BiorreactorRepository
 from typing import List
 from fastapi import HTTPException
@@ -7,8 +7,9 @@ class BiorreactorService:
     def __init__(self, repository: BiorreactorRepository):
         self.repository = repository
 
-    def create_biorreactor(self, bior: Biorreactor) -> int:
-        return self.repository.create(bior)
+    def create_biorreactor(self, bior: BiorreactorUpdate) -> Biorreactor:
+        id_creado = self.repository.create(bior)
+        return self.repository.get_by_id(id_creado)
 
     def get_biorreactor(self, idBiorreactor: int) -> Biorreactor:
         result = self.repository.get_by_id(idBiorreactor)

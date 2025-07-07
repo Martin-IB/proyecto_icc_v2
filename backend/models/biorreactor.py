@@ -7,3 +7,9 @@ class Biorreactor(BaseModel):
     ubicacion: str
     estado: str
     Usuario_idUsuario: int
+
+class BiorreactorUpdate(BaseModel):
+    codigo: Optional[int]
+    ubicacion: str
+    estado: str
+    Usuario_idUsuario: int

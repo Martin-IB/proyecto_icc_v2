@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Biorreactores</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-  <div class="container mt-5">
-    <h2>Gestión de Biorreactores</h2>
-    <hr>
+<div class="contenedor-tabla">
+  <h3>Gestión de Biorreactores</h3>
 
-    <!-- Formulario de registro -->
-    <form id="biorreactorForm" class="mb-4">
+  <!-- Formulario solo visible para admin -->
+  <div id="formularioAdmin" class="mb-3" style="display: none;">
+    <form id="biorreactorForm">
       <div class="row">
         <div class="col-md-4 mb-2">
-          <input type="text" id="nombre" class="form-control" placeholder="Codigo del biorreactor" required>
+          <input type="text" id="nombre" class="form-control" placeholder="Código del biorreactor" required>
         </div>
         <div class="col-md-4 mb-2">
           <input type="text" id="ubicacion" class="form-control" placeholder="Ubicación" required>
@@ -25,25 +17,11 @@
       </div>
       <input type="hidden" id="biorreactorId">
     </form>
-
-    <!-- Tabla de biorreactores -->
-    <table class="table table-bordered table-striped">
-      <thead class="table-dark">
-        <tr>
-          <th>ID</th>
-          <th>Codigo</th>
-          <th>Ubicación</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="biorreactorTableBody">
-        <!-- Se llena desde JS -->
-      </tbody>
-    </table>
-
-    <a href="../dashboard.html" class="btn btn-secondary mt-3">Panel Principal</a>
   </div>
 
-  <script src="../js/biorreactor.js"></script>
-</body>
-</html>
+  <!-- Tabla -->
+  <table id="tablaBiorreactor" class="table tabla-pequena table-bordered table-striped">
+    <thead id="biorreactorThead"></thead>
+    <tbody id="biorreactorTableBody"></tbody>
+  </table>
+</div>

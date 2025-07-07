@@ -1,9 +1,9 @@
 from dao.db import get_db_connection
-from models.biorreactor import Biorreactor
+from models.biorreactor import Biorreactor, BiorreactorUpdate
 from typing import List, Optional
 
 class BiorreactorRepository:
-    def create(self, bior: Biorreactor) -> int:
+    def create(self, bior: BiorreactorUpdate) -> int:
         with get_db_connection() as conn:
             with conn.cursor() as cursor:
                 query = """
@@ -18,6 +18,7 @@ class BiorreactorRepository:
                 ))
                 conn.commit()
                 return cursor.lastrowid
+
 
     def get_by_id(self, idBiorreactor: int) -> Optional[Biorreactor]:
         with get_db_connection() as conn:

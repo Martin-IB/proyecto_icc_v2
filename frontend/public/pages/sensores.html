@@ -1,0 +1,47 @@
+<div class="contenedor-tabla">
+  <h3>Gestión de Sensores</h3>
+
+  <div id="formularioAdminSensor" style="display: none;">
+    <form id="sensorForm" class="mb-3">
+      <div class="row">
+        <div class="col-md-3 mb-2">
+          <input type="text" id="tipo" class="form-control" placeholder="Tipo" required>
+        </div>
+        <div class="col-md-3 mb-2">
+          <input type="text" id="modelo" class="form-control" placeholder="Modelo" required>
+        </div>
+        <div class="col-md-3 mb-2">
+          <input type="text" id="ubicacion" class="form-control" placeholder="Ubicación" required>
+        </div>
+        <div class="col-md-3 mb-2">
+          <select id="biorreactor" class="form-select" required>
+            <option value="">Seleccionar Biorreactor</option>
+            <option value="1">Biorreactor 1</option>
+            <option value="2">Biorreactor 2</option>
+            <!-- Si deseas cargar dinámicamente los biorreactores, puedo ayudarte -->
+          </select>
+        </div>
+        <div class="col-md-3 mb-2">
+          <button type="submit" class="btn btn-success w-100">Guardar</button>
+        </div>
+      </div>
+      <input type="hidden" id="sensorId">
+    </form>
+  </div>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Modelo</th>
+        <th>Ubicación</th>
+        <th>ID Biorreactor</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="sensorTableBody"></tbody>
+  </table>
+</div>
+
+<!-- Script -->
+<script src="../js/sensores.js"></script>

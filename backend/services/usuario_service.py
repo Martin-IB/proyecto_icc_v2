@@ -1,3 +1,4 @@
+
 from fastapi import HTTPException
 from typing import List
 from models.usuario import Usuario
