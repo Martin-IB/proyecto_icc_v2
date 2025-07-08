@@ -6,7 +6,7 @@ import pymysql
 from contextlib import contextmanager
 
 DB_CONFIG = {
-    'host': 'localhost',  # nombre del servicio en docker-compose
+    'host':'172.17.0.1',  #'host.docker.internal' nombre del servicio en docker-compose
     'user': 'root',
     'password': '',  # asegúrate que en docker-compose esté también vacío
     'database': 'db_proyect_final',

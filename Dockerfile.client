@@ -5,7 +5,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Como el Dockerfile está en la raíz, y el archivo está en client/, usa:
-COPY client/send_lectura.py .
+COPY sensor_client/send_lectura.py .
 
 # Instala la dependencia necesaria
 RUN pip install --no-cache-dir requests

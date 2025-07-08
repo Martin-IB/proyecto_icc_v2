@@ -1,8 +1,8 @@
 # SERVICE CORREGIDO - services/empresa_service.py
 from fastapi import HTTPException
 from typing import List
-from models.empresa import Empresa
-from repositories.empresa_repository import EmpresaRepository
+from models.empresas import Empresa
+from repositories.empresas_repository import EmpresaRepository
 
 class EmpresaService:
     def __init__(self, repository: EmpresaRepository):
@@ -30,3 +30,6 @@ class EmpresaService:
         success = self.repository.delete(idEmpresa)
         if not success:
             raise HTTPException(status_code=404, detail="Empresa no encontrada")
+
+def get_empresa_service():
+    return EmpresaService(EmpresaRepository())
