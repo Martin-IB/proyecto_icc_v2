@@ -1,0 +1,15 @@
+# Imagen ligera de Python
+FROM python:3.11-slim
+
+# Establece el directorio de trabajo
+WORKDIR sensor_client/app
+
+
+# Copia el archivo del cliente
+COPY send_lectura.py .
+
+# Instala la dependencia necesaria
+RUN pip install requests
+
+# Ejecuta el script automáticamente al iniciar el contenedor
+CMD ["python", "send_lectura.py"]

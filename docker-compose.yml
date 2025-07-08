@@ -15,4 +15,9 @@ services:
     ports:
       - "8000:8000"
 
-
+  sensor_client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    depends_on:
+      - backend
