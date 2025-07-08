@@ -6,7 +6,7 @@ async function iniciarSesion(event) {
   const errorMsg = document.getElementById("error-msg");
 
   try {
-    const response = await fetch("http://localhost:8000/usuario/login", {
+    const response = await fetch("http://18.188.154.229:8000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

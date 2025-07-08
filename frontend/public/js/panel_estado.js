@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function cargarEstado() {
   try {
-    const res = await fetch("http://localhost:8000/lectura"); // tu API ya existente
+    const res = await fetch("http://18.188.154.229:8000/lectura"); // tu API ya existente
     let datos = await res.json();
 
     
@@ -116,7 +116,7 @@ function mostrarPronostico(recientes) {
 
 async function cargarGraficoTempHum() {
   try {
-    const res = await fetch("http://localhost:8000/lectura");
+    const res = await fetch("http://18.188.154.229:8000/lectura");
     let datos = await res.json();
 
     if (datos.length > 100) {
@@ -187,7 +187,7 @@ let ultimaLectura = null;
 // 🟩 Obtener la última lectura desde la API
 async function obtenerUltimaLectura() {
   try {
-    const res = await fetch("http://localhost:8000/lectura");
+    const res = await fetch("http://18.188.154.229:8000/lectura");
     const datos = await res.json();
     if (datos.length > 0) {
       ultimaLectura = datos[datos.length - 1]; // Último elemento
@@ -256,7 +256,7 @@ function interpretarComando(texto) {
 
 async function responderPronostico() {
   try {
-    const res = await fetch("http://localhost:8000/lectura");
+    const res = await fetch("http://18.188.154.229:8000/lectura");
     const datos = await res.json();
     const ultimos100 = datos.slice(-100); // Últimas 100 lecturas
 

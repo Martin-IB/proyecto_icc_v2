@@ -7,7 +7,7 @@ import json
 puerto = serial.Serial('COM5', 115200, timeout=4)
 
 # Configura la URL del endpoint FastAPI
-API_URL = "http://localhost:8000/lectura/"
+API_URL = "http://18.188.154.229:8000/lectura/"
 
 # IDs fijos de prueba (asegúrate que existan en tu DB)
 BIORREACTOR_ID = 1

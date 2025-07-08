@@ -1,5 +1,5 @@
 (() => {
-  const API_URL = "http://localhost:8000/biorreactor";
+  const API_URL = "http://18.188.154.229:8000/biorreactor"; //"http://localhost:8000/biorreactor";
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const esAdmin = usuario?.Tipo_idTipo === 1;
 
