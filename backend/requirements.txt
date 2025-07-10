@@ -2,3 +2,5 @@ fastapi
 pymysql
 uvicorn
 email_validator
+pyserial
+requests

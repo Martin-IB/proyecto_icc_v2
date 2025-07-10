@@ -2,16 +2,23 @@ import serial
 import requests
 import random
 import json
-
-# Configura tu puerto serial
-puerto = serial.Serial('COM5', 115200, timeout=4)
+import time
 
 # Configura la URL del endpoint FastAPI
 API_URL = "http://18.188.154.229:8000/lectura/"
-
-# IDs fijos de prueba (asegúrate que existan en tu DB)
 BIORREACTOR_ID = 1
 SENSOR_ID = 1
+
+puerto = None
+
+# Intentar conectar el puerto hasta que esté disponible
+while puerto is None:
+    try:
+        puerto = serial.Serial('COM5', 115200, timeout=4)
+        print("Conexión establecida con el sensor en COM5.\n")
+    except serial.SerialException:
+        print("Esperando conexión con el sensor en COM5...")
+        time.sleep(3)
 
 print("Esperando datos del sensor...\n")
 
@@ -24,10 +31,9 @@ while True:
             temperatura_real = float(partes[0])
             humedad = float(partes[1])
 
-            # Simulación ajustada si es menor a 25 °C
             if temperatura_real < 25:
                 diferencia = 27 - temperatura_real
-                ruido = random.uniform(-1.15, 1.5)  # ruido realista
+                ruido = random.uniform(-0.35, 0.35)
                 temperatura_simulada = temperatura_real + diferencia + ruido
             else:
                 temperatura_simulada = temperatura_real
