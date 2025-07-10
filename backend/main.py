@@ -8,7 +8,7 @@ from models.usuario import Usuario,LoginRequest, UsuarioUpdate
 from models.biorreactor import Biorreactor,BiorreactorUpdate
 from models.sensores import Sensor
 from models.empresas import Empresa
-from models.registro import Registro
+from models.registro import Registro,ComandoEntrada
 from models.lectura_sensores import LecturaSensores
 
 from services.tipo_service import TipoService, get_tipo_service
@@ -31,7 +31,8 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://18.188.154.229/3000"],  
+    #allow_origins=["http://18.188.154.229/3000"],
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"], 
     allow_headers=["*"],  
@@ -75,7 +76,7 @@ async def create_usuario(usuario: UsuarioUpdate, service: UsuarioService = Depen
     try:
         return service.create_usuario(usuario)
     except Exception as e:
-        print("❌ Error al crear usuario:", e)
+        print(" Error al crear usuario:", e)
         raise HTTPException(status_code=500, detail="Error al crear usuario")
 
 @app.post("/usuario/login", response_model=Usuario)
@@ -116,7 +117,7 @@ async def create_biorreactor(
     try:
         return service.create_biorreactor(bior)
     except Exception as e:
-        print("❌ Error al crear biorreactor:", e)
+        print("Error al crear biorreactor:", e)
         raise HTTPException(status_code=500, detail="Error al crear biorreactor")
 
 # Obtener biorreactor por ID
@@ -207,6 +208,12 @@ async def create_registro(registro: Registro, service: RegistroService = Depends
     registro_id = service.create_registro(registro)
     return service.get_registro(registro_id)
 
+@app.post("/registrar_comando")
+def registrar_comando(data: ComandoEntrada, service: RegistroService = Depends(get_registro_service)):
+    nuevo_registro = Registro(**data.dict())
+    service.create_registro(nuevo_registro)
+    return {"mensaje": "Comando registrado exitosamente"}
+
 @app.get("/registro/{idRegistro}", response_model=Registro)
 async def get_registro(idRegistro: int, service: RegistroService = Depends(get_registro_service)):
     return service.get_registro(idRegistro)
@@ -223,6 +230,7 @@ async def update_registro(idRegistro: int, registro: Registro, service: Registro
 async def delete_registro(idRegistro: int, service: RegistroService = Depends(get_registro_service)):
     service.delete_registro(idRegistro)
     return {"message": "Registro eliminado correctamente"}
+
 
 
 # Lectura API routes

@@ -34,6 +34,15 @@ class RegistroRepository:
                 cursor.execute("SELECT * FROM Registro")
                 results = cursor.fetchall()
                 return [Registro(**row) for row in results]
+            
+    def get_comandos_voz(self) -> List[Registro]:
+        with get_db_connection() as conn:
+            with conn.cursor(dictionary=True) as cursor:
+                cursor.execute("SELECT * FROM Registro WHERE tipo_evento = 'Voz' ORDER BY fecha DESC")
+                results = cursor.fetchall()
+                return [Registro(**row) for row in results]
+
+
 
     def update(self, idRegistro: int, registro: Registro) -> bool:
         with get_db_connection() as conn:

@@ -1,5 +1,6 @@
 (() => {
-  const API_URL = "http://18.188.154.229:8000/empresa";
+  //const API_URL = "http://18.188.154.229:8000/empresa";
+  const API_URL = "http://localhost:/empresa";
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const esAdmin = usuario?.Tipo_idTipo === 1 || usuario?.Tipo_idTipo === 2;
 

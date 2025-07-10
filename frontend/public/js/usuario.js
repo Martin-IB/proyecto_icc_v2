@@ -1,11 +1,12 @@
 
 (function () {
-  const API_URL_USUARIO = "http://18.188.154.229:8000/usuario";
+  //const API_URL_USUARIO = "http://18.188.154.229:8000/usuario";
+  const API_URL_USUARIO = "http://localhost:8000/usuario";
 
   async function cargarUsuarios() {
     const tableBody = document.getElementById("usuarioTableBody");
     if (!tableBody) {
-      console.warn("⚠️ Tabla de usuarios no encontrada.");
+      console.warn(" Tabla de usuarios no encontrada.");
       return;
     }
 
@@ -32,7 +33,7 @@
         tableBody.appendChild(row);
       });
     } catch (err) {
-      console.error("❌ Error al cargar usuarios:", err);
+      console.error(" Error al cargar usuarios:", err);
     }
   }
 
@@ -60,7 +61,7 @@
   setTimeout(() => {
     const form = document.getElementById("usuarioForm");
     if (!form) {
-      console.warn("⚠️ Formulario de usuario no encontrado.");
+      console.warn(" Formulario de usuario no encontrado.");
       return;
     }
 

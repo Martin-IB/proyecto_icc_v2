@@ -133,8 +133,8 @@ body {
 
 /* === GRÁFICOS === */
 .canvas-pequeno {
-  width: 550px !important;
-  height: 300px !important;
+  width: 45% !important;
+  height: 200px !important;
 }
 
 .semaforo-circular {
@@ -147,6 +147,22 @@ body {
 .circle-chart {
   width: 120px;
   text-align: center;
+}
+
+.estado-card {
+  background-color: #f6f9fd; 
+}
+
+.th-card {
+  background-color: #fbfffe; 
+}
+
+.pronostico-card {
+  background-color: #adf2b3; 
+}
+
+.recomendaciones-card {
+  background-color: #f5ebfb; 
 }
 
 /* === CONTROL POR VOZ === */
@@ -238,7 +254,19 @@ body {
   text-align: center;
 }
 .tabla-pequena {
-  max-width: 400px;   /* Ajusta el ancho según lo que necesites */
-  margin-left: 1rem;    /* Centrar la tabla horizontalmente */
-  font-size: 0.9rem;  /* Opcional: texto más compacto */
+  max-width: 400px;   
+  margin-left: 1rem;  
+  font-size: 0.9rem;  
+}
+
+#graficoPronostico {
+  width: 100% !important;
+  height: 200px !important;
+  max-height: 200px;
+}
+
+#pronosticoContainer {
+  padding: 10px;
+  max-height: 300px;
+  overflow: hidden;
 }

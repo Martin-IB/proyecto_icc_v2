@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from typing import List
-from models.registro import Registro
+from models.registro import Registro,ComandoEntrada
 from repositories.registro_repository import RegistroRepository
 
 class RegistroService:
@@ -18,7 +18,11 @@ class RegistroService:
 
     def get_all_registros(self) -> List[Registro]:
         return self.repository.get_all()
-
+    
+    def registrar_comando(self, comando: ComandoEntrada) -> int:
+        registro = Registro(**comando.dict())
+        return self.create_registro(registro)
+    
     def update_registro(self, idRegistro: int, registro: Registro) -> Registro:
         success = self.repository.update(idRegistro, registro)
         if not success:

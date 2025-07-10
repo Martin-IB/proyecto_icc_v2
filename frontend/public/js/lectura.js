@@ -1,5 +1,6 @@
 (function () {
-  const API_URL = "http://18.188.154.229:8000/lectura";
+  //const API_URL = "http://18.188.154.229:8000/lectura";
+  const API_URL = "http://localhost:8000/lectura";
   const tableBody = document.getElementById("lecturaTableBody");
   let chart;
 
@@ -29,7 +30,7 @@
       });
 
     } catch (error) {
-      console.error("❌ Error cargando lecturas:", error);
+      console.error("Error cargando lecturas:", error);
     }
 
     actualizarGrafico(labels, tempData, humData);

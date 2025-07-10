@@ -6,7 +6,8 @@ async function iniciarSesion(event) {
   const errorMsg = document.getElementById("error-msg");
 
   try {
-    const response = await fetch("http://18.188.154.229:8000/login", {
+    const response = await fetch("http://localhost:8000/usuario/login", {
+    //const response = await fetch("http://localhost:8000/usuario/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -19,7 +20,7 @@ async function iniciarSesion(event) {
     }
 
     const usuario = await response.json();
-    console.log("✅ Usuario autenticado:", usuario);
+    console.log(" Usuario autenticado:", usuario);
 
     // Guardar usuario en localStorage
     localStorage.setItem("usuario", JSON.stringify(usuario));
@@ -28,7 +29,7 @@ async function iniciarSesion(event) {
     window.location.href = "/pages/panel_admin.html";
 
   } catch (error) {
-    console.error("❌ Error al iniciar sesión:", error);
+    console.error(" Error al iniciar sesión:", error);
     errorMsg.textContent = "Correo o contraseña incorrectos.";
   }
 }

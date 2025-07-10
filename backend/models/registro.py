@@ -10,3 +10,9 @@ class Registro(BaseModel):
     Usuario_idUsuario: int
     Biorreactor_idBiorreactor: int
     Sensores_idSensores: int
+class ComandoEntrada(BaseModel):
+    tipo_evento: str
+    description: str
+    Usuario_idUsuario: int
+    Biorreactor_idBiorreactor: int
+    Sensores_idSensores: int

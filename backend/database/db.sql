@@ -111,6 +111,7 @@ CREATE TABLE Lectura_sensores (
   fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
   Biorreactor_idBiorreactor INT NOT NULL,
   Sensores_idSensores INT NOT NULL,
+  estado_ambiente VARCHAR(45),
   PRIMARY KEY (idLectura_sensores),
   INDEX fk_Lectura_Biorreactor_idx (Biorreactor_idBiorreactor),
   INDEX fk_Lectura_Sensores_idx (Sensores_idSensores),
