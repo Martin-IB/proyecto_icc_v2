@@ -1,6 +1,6 @@
 (function () {
-  //const API_URL = "http://18.188.154.229:8000/lectura";
-  const API_URL = "http://localhost:8000/lectura";
+  const API_URL = "http://3.132.200.37:8000/lectura";
+  //const API_URL = "http://localhost:8000/lectura";
   const tableBody = document.getElementById("lecturaTableBody");
   let chart;
 

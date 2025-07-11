@@ -5,7 +5,7 @@ import json
 import time
 
 # Configura la URL del endpoint FastAPI
-API_URL = "http://18.188.154.229:8000/lectura/"
+API_URL = "http://3.132.200.37:8000/lectura/"
 BIORREACTOR_ID = 1
 SENSOR_ID = 1
 

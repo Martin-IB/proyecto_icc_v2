@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // Carga y calcula el estado general del biorreactor
 async function cargarEstado() {
   try {
-    //const res = await fetch("http://18.188.154.229:8000/lectura")
-    const res = await fetch("http://localhost:8000/lectura");
+    const res = await fetch("http://3.132.200.37:8000/lectura"); 
+    //const res = await fetch("http://localhost:8000/lectura");
     let datos = await res.json();
     if (datos.length > 100) datos = datos.slice(-100);
 
@@ -110,8 +110,8 @@ function mostrarPronostico(recientes) {
 // Gráficos de temperatura y humedad
 async function cargarGraficoTempHum() {
   try {
-    //const res = await fetch("http://18.188.154.229:8000/lectura");
-    const res = await fetch("http://localhost:8000/lectura");
+    const res = await fetch("http://3.132.200.37:8000/lectura");
+    //const res = await fetch("http://localhost:8000/lectura");
     let datos = await res.json();
     if (datos.length > 300) datos = datos.slice(-300);
 
@@ -164,8 +164,8 @@ async function cargarGraficoTempHum() {
 // Nuevo: gráfico de pronóstico diario (óptimo/ajuste/crítico)
 async function cargarGraficoPronostico() {
   try {
-    //const res = await fetch("http://18.188.154.229:8000/lectura");
-    const res = await fetch("http://localhost:8000/lectura");
+    const res = await fetch("http://3.132.200.37:8000/lectura");
+    //const res = await fetch("http://localhost:8000/lectura");
     let datos = await res.json();
 
     if (datos.length < 10) return;
@@ -235,8 +235,8 @@ let ultimaLectura = null;
 // Obtener la última lectura desde la API
 async function obtenerUltimaLectura() {
   try {
-    const res = await fetch("http://localhost:8000/lectura");
-    //const res = await fetch("http://18.188.154.229:8000/lectura");
+    //const res = await fetch("http://localhost:8000/lectura");
+    const res = await fetch("http://3.132.200.37:8000/lectura");
     const datos = await res.json();
     if (datos.length > 0) {
       ultimaLectura = datos[datos.length - 1];
@@ -314,8 +314,8 @@ function generarRespuesta(base, dato) {
 
 async function responderPronostico() {
   try {
-    const res = await fetch("http://localhost:8000/lectura");
-    //const res = await fetch("http://18.188.154.229:8000/lectura");
+    //const res = await fetch("http://localhost:8000/lectura");
+    const res = await fetch("http://3.132.200.37:8000/lectura");
     const datos = await res.json();
     const ultimos = datos.slice(-100);
 
@@ -362,8 +362,8 @@ function responderHumedad() {
 // Predicción del día con heurística
 async function pronosticoDelDia() {
   try {
-    const res = await fetch("http://localhost:8000/lectura");
-    //const res = await fetch("http://18.188.154.229:8000/lectura");
+    //const res = await fetch("http://localhost:8000/lectura");
+    const res = await fetch("http://3.132.200.37:8000/lectura");
     const datos = await res.json();
     const ultimos = datos.slice(-200);
 
@@ -416,8 +416,8 @@ function hablar(mensaje) {
 // Registrar comando en la base de datos
 async function registrarComando(comando) {
   try {
-    //await fetch("http://18.188.154.229:8000/registro", {
-    await fetch("http://localhost:8000/registro", {
+    await fetch("http://3.132.200.37:8000/registro", {
+    //await fetch("http://localhost:8000/registro", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

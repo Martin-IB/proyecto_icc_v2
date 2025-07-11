@@ -1,7 +1,7 @@
 
 (function () {
-  //const API_URL_USUARIO = "http://18.188.154.229:8000/usuario";
-  const API_URL_USUARIO = "http://localhost:8000/usuario";
+  const API_URL_USUARIO = "http://3.132.200.37:8000/usuario";
+  //const API_URL_USUARIO = "http://localhost:8000/usuario";
 
   async function cargarUsuarios() {
     const tableBody = document.getElementById("usuarioTableBody");
