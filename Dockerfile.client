@@ -1,15 +1,16 @@
-# Imagen ligera de Python
-FROM python:3.11-slim
+# Imagen de Python
+FROM python:3.11
 
-# Establece el directorio de trabajo
+# Directorio de trabajo
 WORKDIR /app
 
-# Como el Dockerfile está en la raíz, y el archivo está en client/, usa:
+# Copia de archivos
 COPY sensor_client/send_lectura.py .
+COPY sensor_client/requirements.txt .
 
-# Instala la dependencia necesaria
-RUN pip install --no-cache-dir requests
+# Dependencia necesaria
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Ejecuta el script automáticamente al iniciar el contenedor
+# Ejecutar el script
 CMD ["python", "send_lectura.py"]
 

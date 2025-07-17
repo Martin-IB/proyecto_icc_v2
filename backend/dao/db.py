@@ -7,8 +7,9 @@ from contextlib import contextmanager
 
 DB_CONFIG = {
     'host':'host.docker.internal',
-    #'host':'localhost',  
-    'password': '',  # asegúrate que en docker-compose esté también vacío
+    #'host':'localhost', 
+    'user': 'root', 
+    'password': '',
     'database': 'db_proyect_final',
     'charset': 'utf8mb4',
     'cursorclass': pymysql.cursors.DictCursor

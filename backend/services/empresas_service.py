@@ -1,4 +1,3 @@
-# SERVICE CORREGIDO - services/empresa_service.py
 from fastapi import HTTPException
 from typing import List
 from models.empresas import Empresa

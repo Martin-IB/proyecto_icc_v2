@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // Carga y calcula el estado general del biorreactor
 async function cargarEstado() {
   try {
-    const res = await fetch("http://3.132.200.37:8000/lectura"); 
-    //const res = await fetch("http://localhost:8000/lectura");
+    //const res = await fetch("http://3.132.200.37:8000/lectura"); 
+    const res = await fetch("http://localhost:8000/lectura");
     let datos = await res.json();
     if (datos.length > 100) datos = datos.slice(-100);
 
@@ -423,9 +423,9 @@ async function registrarComando(comando) {
       body: JSON.stringify({
         tipo_evento: "Voz",
         description: comando,
-        Usuario_idUsuario: 1, // ID real del usuario
-        Biorreactor_idBiorreactor: 1, // ID real
-        Sensores_idSensores: 1 // ID real
+        Usuario_idUsuario: 1, 
+        Biorreactor_idBiorreactor: 1, 
+        Sensores_idSensores: 1 
       })
     });
   } catch (error) {

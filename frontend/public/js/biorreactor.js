@@ -19,7 +19,6 @@
       return;
     }
 
-    // Mostrar formulario solo si es admin
     if (esAdmin && formularioAdmin) {
       formularioAdmin.style.display = "block";
     }
@@ -107,7 +106,7 @@
       }
     };
 
-    // Cargar al iniciar
+
     cargarBiorreactores();
   }
 

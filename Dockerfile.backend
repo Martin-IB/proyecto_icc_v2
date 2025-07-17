@@ -1,20 +1,20 @@
-# Usa una imagen ligera
+# Imagen
 FROM python:3.11
 
-# Establece directorio de trabajo
+# Directorio de trabajo
 WORKDIR /app
 
-# Copia archivos
+# Copia de archivos
 COPY backend/ /app/
 
-# Instala dependencias
+# Dependencias
 COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia el resto del del backend
+# Copia del backend
 COPY backend/ .
 
-# Expone el puerto
+# P Expone el puerto
 EXPOSE 8000
 
 # Ejecuta FastAPI
