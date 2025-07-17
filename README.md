@@ -22,7 +22,7 @@ El despliegue se realiza en la nube utilizando una instancia EC2 de AWS. La inst
 2. Configurar el grupo de seguridad para permitir el tráfico HTTP (puerto 80), SSH (puerto 22), puerto 8000 y 3000.
 3. Conectarse a la instancia vía SSH.
 4. Clonar el repositorio en la instancia EC2.
-5. Hacer sudo git clone https://github.com/Martin-IB/Proyecto_ICC.git
+5. Hacer sudo git clone https://github.com/Martin-IB/proyecto_icc_v2.git
 6. Instalar Docker y Docker Compose.
 7. Ejecutar `docker-compose up -d` en la carpeta del proyecto.
 8. Acceder a la aplicación desde el navegador usando la IP pública de la instancia EC2.
